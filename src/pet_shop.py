@@ -54,5 +54,21 @@ def get_customer_pet_count(customer):
     return len(customer["pets"])
 
 def add_pet_to_customer(customer, new_pet_dic):
-    customer["pets"].append(new_pet_dic)    
+    customer["pets"].append(new_pet_dic)
+
+def customer_can_afford_pet(customer, new_pet_dic):
+    if get_customer_cash(customer) >= new_pet_dic["price"]:
+        return True
+    else:
+        return False
+
+def sell_pet_to_customer(pet_shop_dic, pet_dic, customer):
+    if pet_dic != None:
+        if customer_can_afford_pet(customer, pet_dic):
+            add_pet_to_customer(customer,pet_dic)
+            pet_shop_dic["admin"]["pets_sold"]+=1
+            cash_value = pet_dic["price"]
+            remove_customer_cash(customer, cash_value)
+            pet_shop_dic["admin"]["total_cash"] += cash_value
+            remove_pet_by_name(pet_shop_dic,pet_dic["name"])
 
